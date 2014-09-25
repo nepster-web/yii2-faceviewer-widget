@@ -1,5 +1,5 @@
 {
-    "name": "nepster-web/Yii2-FaceViewer-Widget",
+    "name": "nepster-web/yii2-faceviewer-widget",
     "description": "Виджет для отображения представления пользователя",
     "type": "yii2-widget",
     "keywords": ["yii2", "yii 2", "widget", "user avatar", "user photo"],
@@ -11,15 +11,15 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/nepster-web/Yii2-FaceViewer-Widget/issues/new",
-        "source": "https://github.com/nepster-web/Yii2-FaceViewer-Widget"
+        "issues": "https://github.com/nepster-web/yii2-faceviewer-widget/issues/new",
+        "source": "https://github.com/nepster-web/yii2-faceviewer-widget"
     },
     "require": {
         "yiisoft/yii2": "*"
     },
     "autoload": {
         "psr-4": {
-            "nepster-web\\FaceViewer\\": ""
+            "nepster-web\\faceviewer\\": ""
         }
     }
 }
