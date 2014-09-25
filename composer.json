@@ -15,7 +15,7 @@
         "source": "https://github.com/nepster-web/Yii2-FaceViewer-Widget"
     },
     "require": {
-        "yiisoft/yii2": "*",
+        "yiisoft/yii2": "*"
     },
     "autoload": {
         "psr-4": {
