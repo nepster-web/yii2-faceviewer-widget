@@ -1,0 +1,25 @@
+{
+    "name": "nepster-web/Yii2-FaceViewer-Widget",
+    "description": "Виджет для отображения представления пользователя",
+    "type": "yii2-widget",
+    "keywords": ["yii2", "yii 2", "widget", "user avatar", "user photo"],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Nepster",
+            "email": "nepsterxxx@mail.ru"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/nepster-web/Yii2-FaceViewer-Widget/issues/new",
+        "source": "https://github.com/nepster-web/Yii2-FaceViewer-Widget"
+    },
+    "require": {
+        "yiisoft/yii2": "*",
+    },
+    "autoload": {
+        "psr-4": {
+            "nepster-web\\FaceViewer\\": ""
+        }
+    }
+}
