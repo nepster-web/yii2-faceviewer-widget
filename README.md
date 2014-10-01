@@ -1,25 +1,26 @@
 FaceViewer Widget for Yii 2
 ===========================
 
-Виджет для отображения представления пользователя (например аватарки).
+Виджет для отображения представления пользователя (например аватарки или фотографии).
 
 Установка
 ---------
 
-Предпочтительный способ установить это расширение через [composer](http://getcomposer.org/download/).
+Предпочтительный способ установить этого виджета через [composer](http://getcomposer.org/download/).
 
-Запустить
+Запустите в консоле
 
-```sh
+```
 php composer.phar require nepster-web/yii2-faceviewer-widget: dev-master
 ```
 
-или добавить в `composer.json` файл в секцию require:
+или добавьте
 
-```json
+```
 "nepster-web/yii2-faceviewer-widget": "dev-master"
 ```
 
+в файл `composer.json` в секцию require.
 
 Конфигурации
 --------------------------
