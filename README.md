@@ -35,8 +35,8 @@ php composer.phar require nepster-web/yii2-faceviewer-widget: dev-master
 
 **Все настройки:** <br/>
 
-`template` - Шаблон представления. Может принимать как строку, так и callback функцию. <br/><br/>
-{face} - Приобразуется в изображение. <br/> <br/>
+`template` - Шаблон представления, может принимать как строку, так и callback функцию. <br/><br/>
+{face} - Преобразуется в адрес изображения. <br/> <br/>
 Дополнительные атрибуты должны соответствовать атрибутам в `data`.
 Например, если указать в шаблоне {name}, то поиск значения name будет выполнен либо в массиве `data`, либо в атрибутах модели пользователя, если указан его идентификатор (`userId`).
 
@@ -53,7 +53,7 @@ php composer.phar require nepster-web/yii2-faceviewer-widget: dev-master
 `userId` - Если мы работаем с пользователями, то вместо  `data` можно указать идентификатор пользователя, тогда faceviewer сам получит всю необходимую информаци.
 
 
-`userModel` - неймспейс модели пользователя. 
+`userModel` - Неймспейс модели пользователя. 
 
 
 `userModelAttributes` - Атрибуты пользователя, которые будут получены при запросе. 
@@ -117,22 +117,22 @@ php composer.phar require nepster-web/yii2-faceviewer-widget: dev-master
 Рекомендации
 --------------------------
 <br/>
-Если Вы используете данный виджет неоднократно, то нет необходимости при каждом вызове виджета передевать настройки на прямую. Можно реализовать передачу дефолтной конфигурации.
+Если Вы используете данный виджет неоднократно, то нет необходимости при каждом вызове передавать настройки напрямую. Можно реализовать передачу конфигурации по умолчанию.
 
 Для этого можно использовать [DI](https://github.com/yiisoft/yii2/blob/master/docs/guide/concept-di-container.md):
 
 ```php  
-// ДЕФОЛТНЫЕ НАСТРОЙКИ ДЛЯ ВИДЖЕТА faceviewer
+// Настройки по умолчанию для виджета faceviewer
 \Yii::$container->set('nepster\faceviewer\Widget', [
                                         // Url адрес с загруженными аватарками 
-                                        'faceUrl'        => \Yii::$app->getModule('users')->avatarUrl,
+                                        'faceUrl'        => '/statics/uploads/avatars',
                                         // Директория с загруженными аватарками на сервере
-                                        'facePath'       => \Yii::$app->getModule('users')->avatarPath,
+                                        'facePath'       =>  '/statics/uploads/avatars',
                                         // Url адрес с аватарками по умолчанию 
-                                        'faceUrlDefault' => \Yii::$app->getModule('users')->avatarsDefaultUrl,
+                                        'faceUrlDefault' => '/statics/templates/default/avatars',
                                         // Дефолтная аватарка
                                         'faceDefault' => 'no-avatar.png'
                                     ]);
 ```
 
-Предложенный код можно разместить в `init` необходимого модуля или в `init` общего контроллера.
+Предложенный код можно разместить в `init` общего контроллера или в `init` необходимого модуля.
