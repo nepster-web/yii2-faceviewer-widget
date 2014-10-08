@@ -119,8 +119,9 @@ class Widget extends \yii\base\Widget
         if ($this->userId) {
             $userModel = new $this->userModel;
             if ($userModel instanceof ActiveRecord) {
-                $user = $userModel::findOne($this->userId);
-                $this->data = $user->getAttributes($this->userModelAttributes);
+                if ($user = $userModel::findOne($this->userId)) {
+                    $this->data = $user->getAttributes($this->userModelAttributes);
+                }
             }
             else {
                 throw new InvalidParamException('userModel must be instanceof ActiveRecord!');
