@@ -2,10 +2,10 @@ FaceViewer Widget for Yii 2
 ===========================
 
 Виджет для отображения представления пользователя (например аватарки или фотографии). <br/>
-FaceViewer может быть полезен, в случае, когда необходимо показывать представление пользователей по различным шаблонам.
+FaceViewer может быть полезен, в случае, когда необходимо показывать представление пользователей по различным шаблонам и делать это частно. Например: аватарки в сообщениях пользователей, фотографии в отзывах, изображение профиля и др.
 
-Например
----------
+Пример отображения
+------------------
 
 ![alt text](http://oi60.tinypic.com/15fi39d.jpg "")
 
@@ -35,8 +35,8 @@ php composer.phar require nepster-web/yii2-faceviewer-widget: dev-master
 
 **Все настройки:** <br/>
 
-`template` - Шаблон представления, может принимать как строку, так и callback функцию. <br/><br/>
-{face} - Преобразуется в адрес изображения. <br/> <br/>
+`template` - Шаблон представления. Может принимать как строку, так и callback функцию. <br/><br/>
+{face} - Приобразуется в изображение. <br/> <br/>
 Дополнительные атрибуты должны соответствовать атрибутам в `data`.
 Например, если указать в шаблоне {name}, то поиск значения name будет выполнен либо в массиве `data`, либо в атрибутах модели пользователя, если указан его идентификатор (`userId`).
 
@@ -53,7 +53,7 @@ php composer.phar require nepster-web/yii2-faceviewer-widget: dev-master
 `userId` - Если мы работаем с пользователями, то вместо  `data` можно указать идентификатор пользователя, тогда faceviewer сам получит всю необходимую информаци.
 
 
-`userModel` - Неймспейс модели пользователя. 
+`userModel` - неймспейс модели пользователя. 
 
 
 `userModelAttributes` - Атрибуты пользователя, которые будут получены при запросе. 
@@ -110,14 +110,81 @@ php composer.phar require nepster-web/yii2-faceviewer-widget: dev-master
 ![alt text](http://s8.tinypic.com/m7qhcg_th.jpg "Аватарка, Логин, Имя и Фамилия")
 
 
+**Дополнительные примеры:**
 
+```php 
+<?php
+// Вывод изображения включая пол
+echo \nepster\faceviewer\Widget::widget([
+    'template' => '{face} {name} {surname}',
+    'data' => [
+        'name' => 'Виктория',
+        'surname' => 'Иванова',
+        'sex' => 2, // К примеру 1 - М, 2 - Ж
+    ],
+    'faceUrl' => '/statics/uploads/avatars',
+    'facePath' => '@statics/uploads/avatars',
+    'faceUrlDefault' => '/statics/default',
+    'faceDefault' => 'no-avatar.png',
+    'faceField' => 'image_url',
+    'faceSexField' => 'sex',
+    // Дефолтные изображения исходя из поля sex
+    'faceSexDefaultAvatar' => [
+        1 => 'male.png',
+        2 => 'female.png'
+    ]
+]);
+?>
+```
+
+<br/>
+
+```php 
+<?php
+// Вывод изображения по ID пользователя
+echo \nepster\faceviewer\Widget::widget([
+    'template' => '{face} {name} {surname}',
+    'userId' => 333,
+    'faceUrl' => '/statics/uploads/avatars',
+    'facePath' => '@statics/uploads/avatars',
+    'faceUrlDefault' => '/statics/default',
+    'faceDefault' => 'no-avatar.png',
+    'faceField' => 'avatar_url',
+    'userModel' => 'common\modules\users\models\User',
+    'userModelAttributes' => ['name', 'surname', 'avatar_url']
+]);
+?>
+```
+
+<br/>
+
+```php 
+<?php
+// Использование callback-функции
+echo \nepster\faceviewer\Widget::widget([
+    'template' => function($data) {
+        // Массив всех доступных данных
+        var_dump($data);
+    },
+    'data' => [
+        'name' => 'Иван',
+        'surname' => 'Иванов',
+    ],
+    'faceUrl' => '/statics/uploads/avatars',
+    'facePath' => '@statics/uploads/avatars',
+    'faceUrlDefault' => '/statics/templates/default/avatars',
+    'faceDefault' => 'no-avatar.png',
+    'faceField' => 'image_url'
+]);
+?>
+```
 
 <br/>
 
 Рекомендации
 --------------------------
 <br/>
-Если Вы используете данный виджет неоднократно, то нет необходимости при каждом вызове передавать настройки напрямую. Можно реализовать передачу конфигурации по умолчанию.
+Если Вы используете данный виджет неоднократно, то нет необходимости при каждом вызове виджета передевать настройки на прямую. Можно реализовать передачу дефолтной конфигурации.
 
 Для этого можно использовать [DI](https://github.com/yiisoft/yii2/blob/master/docs/guide/concept-di-container.md):
 
@@ -127,7 +194,7 @@ php composer.phar require nepster-web/yii2-faceviewer-widget: dev-master
                                         // Url адрес с загруженными аватарками 
                                         'faceUrl'        => '/statics/uploads/avatars',
                                         // Директория с загруженными аватарками на сервере
-                                        'facePath'       =>  '/statics/uploads/avatars',
+                                        'facePath'       =>  '@statics/uploads/avatars',
                                         // Url адрес с аватарками по умолчанию 
                                         'faceUrlDefault' => '/statics/templates/default/avatars',
                                         // Дефолтная аватарка
@@ -135,4 +202,4 @@ php composer.phar require nepster-web/yii2-faceviewer-widget: dev-master
                                     ]);
 ```
 
-Предложенный код можно разместить в `init` общего контроллера или в `init` необходимого модуля.
+Предложенный код можно разместить в `init` необходимого модуля или в `init` общего контроллера.
