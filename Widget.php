@@ -47,7 +47,7 @@ class Widget extends \yii\base\Widget
     public $userModel = 'common\modules\users\models\User';
 
     /**
-     * Реляцыя на профиль пользователя
+     * Реляция на профиль пользователя
      */
     public $userProfileRelated = 'profile';
 

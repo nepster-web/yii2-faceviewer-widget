@@ -53,7 +53,10 @@ php composer.phar require nepster-web/yii2-faceviewer-widget: dev-master
 `userId` - Если мы работаем с пользователями, то вместо  `data` можно указать идентификатор пользователя, тогда faceviewer сам получит всю необходимую информаци.
 
 
-`userModel` - неймспейс модели пользователя. 
+`userModel` - неймспейс модели пользователя.
+
+
+`userProfileRelated` - название реляции на профиль пользователя.
 
 
 `userModelAttributes` - Атрибуты пользователя, которые будут получены при запросе. 
@@ -178,6 +181,15 @@ echo \nepster\faceviewer\Widget::widget([
 ]);
 ?>
 ```
+
+<br/>
+
+Внимание, если в Вашей структуре есть разделение таблиц пользователей и профиля, то Вы можете использовать следующий синтаксис:
+```
+'userModelAttributes' => ['username', 'profile' => ['avatar_url', 'name', 'surname'] ],
+```
+
+FaceViewer возьмет свойство username из главной модели, а свойства avatar_url, name и surname попробует достать из реляции профиля.
 
 <br/>
 
