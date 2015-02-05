@@ -2,20 +2,17 @@
 
 namespace nepster\faceviewer;
 
-use Yii;
-use yii\helpers\Html;
-use yii\base\InvalidParamException;
 use yii\base\InvalidConfigException;
+use yii\base\InvalidParamException;
 use yii\db\ActiveRecord;
-
+use yii\helpers\Html;
+use Yii;
 
 /**
  * Class Widget
  * @package nepster\faceviewer
  * 
- * Виджет показывает лицевое изображение пользователя (например аватар)
- * 
- * 
+ * Виджет показывает лицевое представление пользователя по шаблону (например аватр и логин)
  */
 class Widget extends \yii\base\Widget
 {
@@ -48,6 +45,11 @@ class Widget extends \yii\base\Widget
      * ActiveRecord Модель Пользователя
      */
     public $userModel = 'common\modules\users\models\User';
+
+    /**
+     * Реляцыя на профиль пользователя
+     */
+    public $userProfileRelated = 'profile';
 
     /**
      * Атрибуты модели, которые будут доступны в виджите
@@ -120,7 +122,17 @@ class Widget extends \yii\base\Widget
             $userModel = new $this->userModel;
             if ($userModel instanceof ActiveRecord) {
                 if ($user = $userModel::findOne($this->userId)) {
-                    $this->data = $user->getAttributes($this->userModelAttributes);
+                    $profile = $this->userProfileRelated;
+                    if (isset($this->userModelAttributes[$profile])) {
+                        $userProfileAttribute = $this->userModelAttributes[$profile];
+                        unset($this->userModelAttributes[$profile]);
+
+                        $this->data = $user->getAttributes($this->userModelAttributes);
+                        $this->data = array_merge($this->data, $user->profile->getAttributes($userProfileAttribute));
+
+                    } else {
+                        $this->data = $user->getAttributes($this->userModelAttributes);
+                    }
                 }
             }
             else {
@@ -128,7 +140,6 @@ class Widget extends \yii\base\Widget
             }
         }
     }
-
 
     /**
      * @inheritdoc
@@ -145,7 +156,6 @@ class Widget extends \yii\base\Widget
             return $this->replaceData($this->template);
         }
     }
-
 
     /**
      * Добавляет дефолтные параметры к массиву данных если вызвана калбек функция
@@ -177,7 +187,6 @@ class Widget extends \yii\base\Widget
         return array_merge($data, $default);
     }
 
-
     /**
      * Заменяем необходимые данные
      * @var mixsed $data
@@ -187,8 +196,7 @@ class Widget extends \yii\base\Widget
     {
         if (is_string($data)) {
             $data = $this->replaceString($data);
-        }
-        else {
+        } else {
             if (is_array($data)) {
                 foreach ($data as &$item) {
                     if (is_string($item)) {
@@ -199,7 +207,6 @@ class Widget extends \yii\base\Widget
         }
         return $data;
     }
-
 
     /**
      * Заменяем необходимые данные
@@ -221,16 +228,15 @@ class Widget extends \yii\base\Widget
 
         foreach ($vars as &$var) {
             if ($var == 'face') {
-                $newString = str_replace('{' . $var . '}', $this->getFace($this->data[$this->faceField]), $newString);
-            }
-            else {
+                $face = isset($this->data[$this->faceField]) ? $this->data[$this->faceField] : null;
+                $newString = str_replace('{' . $var . '}', $this->getFace($face), $newString);
+            } else {
                 $newString = str_replace('{' . $var . '}', $this->data[$var], $newString);
             }
         }
         
         return $newString;
     }
-
 
     /**
      * Получить лицевое изображение пользователя
@@ -241,14 +247,12 @@ class Widget extends \yii\base\Widget
     {
         if ($face) {
             $faceUrl = $this->faceUrl . '/' . $face;
-        }
-        else {
+        } else {
             if (isset($this->data[$this->faceSexField])) {
                 if (is_array($this->faceSexDefaultAvatar) && isset($this->faceSexDefaultAvatar[$this->data[$this->faceSexField]])) {
                     $faceUrl = $this->faceUrlDefault . '/' . $this->faceSexDefaultAvatar[$this->data[$this->faceSexField]];
                 }
-            }
-            else {
+            } else {
                 $faceUrl = $this->faceUrlDefault . '/' . $this->faceDefault;
             }
         }
