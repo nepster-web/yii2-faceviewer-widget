@@ -11,12 +11,11 @@ use Yii;
 /**
  * Class Widget
  * @package nepster\faceviewer
- * 
- * Виджет показывает лицевое представление пользователя по шаблону (например аватр и логин)
+ *
+ * Виджет показывает лицевое представление пользователя по шаблону (например аватар и логин)
  */
 class Widget extends \yii\base\Widget
 {
-
     /**
      * Шаблон отображения представления пользователя
      * @var string/function
@@ -30,7 +29,7 @@ class Widget extends \yii\base\Widget
     public $templateUrl = null;
 
     /**
-     * Опции ссылки шаблона 
+     * Опции ссылки шаблона
      * @var array
      */
     public $templateUrlOptions = [];
@@ -85,7 +84,7 @@ class Widget extends \yii\base\Widget
      * @var string
      */
     public $faceDefault = 'face.png';
-    
+
     /**
      * Название свойства, Пол пользователя
      * @var string
@@ -110,7 +109,6 @@ class Widget extends \yii\base\Widget
      */
     public $data = [];
 
-
     /**
      * @inheritdoc
      */
@@ -134,8 +132,7 @@ class Widget extends \yii\base\Widget
                         $this->data = $user->getAttributes($this->userModelAttributes);
                     }
                 }
-            }
-            else {
+            } else {
                 throw new InvalidParamException('userModel must be instanceof ActiveRecord!');
             }
         }
@@ -148,8 +145,7 @@ class Widget extends \yii\base\Widget
     {
         if (is_callable($this->template)) {
             return call_user_func_array($this->template, ['data' => $this->addDefaultParam($this->data)]);
-        }
-        else {
+        } else {
             if ($this->templateUrl) {
                 return Html::a($this->replaceData($this->template), $this->replaceData($this->templateUrl), $this->templateUrlOptions);
             }
@@ -159,38 +155,38 @@ class Widget extends \yii\base\Widget
 
     /**
      * Добавляет дефолтные параметры к массиву данных если вызвана калбек функция
-     * @var array $data 
-     * @resurn array
+     * @param $data
+     * @return array
      */
     private function addDefaultParam($data)
     {
         $data = is_array($data) ? $data : [];
-        
+
         $face = isset($this->data[$this->faceField]) ? $this->data[$this->faceField] : null;
         $default = [];
         $default['_default'] = [
-            'face'                 => $this->getFace($face),
-            'templateUrlOptions'   => $this->templateUrlOptions,
-            'userId'               => $this->userId,
-            'userModel'            => $this->userModel,
-            'userModelAttributes'  => $this->userModelAttributes,            
-            'faceImgOptions'       => $this->faceImgOptions,
-            'faceUrl'              => $this->faceUrl,
-            'facePath'             => $this->facePath,
-            'faceDefault'          => $this->faceDefault,
-            'faceUrlDefault'       => $this->faceUrlDefault,
-            'faceSexField'         => $this->faceSexField,
+            'face' => $this->getFace($face),
+            'templateUrlOptions' => $this->templateUrlOptions,
+            'userId' => $this->userId,
+            'userModel' => $this->userModel,
+            'userModelAttributes' => $this->userModelAttributes,
+            'faceImgOptions' => $this->faceImgOptions,
+            'faceUrl' => $this->faceUrl,
+            'facePath' => $this->facePath,
+            'faceDefault' => $this->faceDefault,
+            'faceUrlDefault' => $this->faceUrlDefault,
+            'faceSexField' => $this->faceSexField,
             'faceSexDefaultAvatar' => $this->faceSexDefaultAvatar,
-            'faceField'            => $this->faceField,
+            'faceField' => $this->faceField,
         ];
-        
+
         return array_merge($data, $default);
     }
 
     /**
      * Заменяем необходимые данные
-     * @var mixsed $data
-     * @resurn string
+     * @param $data
+     * @return mixed|string
      */
     private function replaceData($data)
     {
@@ -210,8 +206,8 @@ class Widget extends \yii\base\Widget
 
     /**
      * Заменяем необходимые данные
-     * @var string $string
-     * @resurn string
+     * @param $string
+     * @return string
      */
     private function replaceString($string)
     {
@@ -234,14 +230,14 @@ class Widget extends \yii\base\Widget
                 $newString = str_replace('{' . $var . '}', $this->data[$var], $newString);
             }
         }
-        
+
         return $newString;
     }
 
     /**
      * Получить лицевое изображение пользователя
-     * @var string $face 
-     * @resurn $string
+     * @param string $face
+     * @return string
      */
     private function getFace($face)
     {
