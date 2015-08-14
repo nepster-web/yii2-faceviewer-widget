@@ -88,6 +88,9 @@ php composer.phar require --prefer-dist nepster-web/yii2-faceviewer-widget "*"
 `faceImgOptions` - Атрибуты изображения.
 
 
+`onlyUrl` - Вернуть только изображение без дополнительных тегов.
+
+
 
 **Пример использования:**
 

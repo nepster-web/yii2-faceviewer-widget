@@ -104,6 +104,12 @@ class Widget extends \yii\base\Widget
     public $faceField = 'avatar_url';
 
     /**
+     * Указывает нужно ли возвращать только адрес изображения без дополнительных тегов
+     * @var bool
+     */
+    public $onlyUrl = false;
+
+    /**
      * Данные пользователя
      * @var array
      */
@@ -251,6 +257,10 @@ class Widget extends \yii\base\Widget
             } else {
                 $faceUrl = $this->faceUrlDefault . '/' . $this->faceDefault;
             }
+        }
+
+        if ($this->onlyUrl) {
+            return $faceUrl;
         }
 
         return Html::img($faceUrl, $this->faceImgOptions);
